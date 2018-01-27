@@ -1,0 +1,26 @@
+group 'lv.akurss'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile group: 'com.rometools', name: 'rome', version: '1.9.0'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.2'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'lv.akurss.gradletest.Runner'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
